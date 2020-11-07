@@ -9,7 +9,7 @@ exports.getById = async function getById (id) {
 }
 
 //list all the articles in the database
-exports.getAll = async function getAll (page, limit, order, direction) {
+exports.getAll = async function getAll ( page, limit, order, direction) {
   const offset = (page - 1) * limit;
   let query;
   if (direction === 'DESC') {
