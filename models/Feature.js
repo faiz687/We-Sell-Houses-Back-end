@@ -23,8 +23,8 @@ exports.getAll = async function getAll (page, limit, order, direction) {
 }
 
 //create a new article in the database
-exports.add = async function add(houseid,body) {
-  body.features.forEach( async (item, index) => {
+exports.add = async function add(houseid,Allfeature) {
+    Allfeature.forEach( async (item, index) => {
     const query = "INSERT INTO Feature SET ?";
     const feature = {houseid:houseid , feature:item }
     const data = await db.run_query(query, feature);

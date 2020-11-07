@@ -23,10 +23,10 @@ exports.getAll = async function getAll (page, limit, order, direction) {
 }
 
 //create a new article in the database
-exports.add = async function add (house) {
+exports.add = async function add(house) {
   const query = "INSERT INTO Houses SET ?";
   const data = await db.run_query(query, house);
-  return data;
+  return data; 
 }
 
 //delete an article by its id

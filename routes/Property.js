@@ -16,10 +16,8 @@ const prefix = '/api/v1/property';
 const router = Router({prefix: prefix});
 
 //property routes
-// router.get('/', getAll);
-router.post('/', auth, bodyParser(), validateProperty, createArticle);
-
-
+router.get('/', getAll);
+router.post('/', auth, bodyParser(), validateProperty, CreateProperty);
 
 
 // router.get('/:id([0-9]{1,})', getById);
@@ -28,7 +26,6 @@ router.post('/', auth, bodyParser(), validateProperty, createArticle);
 
 // property feature  routes
 // router.get('/:id([0-9]{1,})/likes', likesCount);
-router.post('/:id([0-9]{1,})/features', auth , bodyParser(), validatePropertyFeature ,  addfeature);
 // router.del('/:id([0-9]{1,})/likes', auth, dislikePost);
 
 // // views route
@@ -44,25 +41,24 @@ router.post('/:id([0-9]{1,})/features', auth , bodyParser(), validatePropertyFea
 // router.post('/:id([0-9]{1,})/comments', auth, bodyParser(), addCommentIds, validateComment, addComment);
 
 
-// async function getAll(ctx) {
-// 	console.log("hello world")
-//   const {page=1, limit=100, order="dateCreated", direction='ASC'} = ctx.request.query;
-//   const result = await articles.getAll(page, limit, order, direction);
-//   if (result.length) {
-//     const body = result.map(post => {
-//       // extract the post fields we want to send back (summary details)
-//       const {ID, title, summary, imageURL, authorID} = post;
-//       // add links to the post summaries for HATEOAS compliance
-//       // clients can follow these to find related resources
-//       const links = {
-//         likes: `${ctx.protocol}://${ctx.host}${prefix}/${post.ID}/likes`,
-//         self: `${ctx.protocol}://${ctx.host}${prefix}/${post.ID}`
-//       }
-//       return {ID, title, summary, imageURL, authorID, links};
-//     });
-//     ctx.body = body;
-//   }
-// }
+async function getAll(ctx) {
+  const {page=1, limit=100, order="dateCreated", direction='ASC'} = ctx.request.query;
+  const result = await property.getAll(page, limit, order, direction);
+  if (result.length) {
+    const body = result.map(post => {
+      // extract the post fields we want to send back (summary details)
+      const {ID, title, summary, imageURL, authorID} = post;
+      // add links to the post summaries for HATEOAS compliance
+      // clients can follow these to find related resources
+      const links = {
+        likes: `${ctx.protocol}://${ctx.host}${prefix}/${post.ID}/likes`,
+        self: `${ctx.protocol}://${ctx.host}${prefix}/${post.ID}`
+      }
+      return {ID, title, summary, imageURL, authorID, links};
+    });
+    ctx.body = body;
+  }
+}
 
 // async function likesCount(ctx) {
 //   // TODO: add error handling
@@ -71,14 +67,14 @@ router.post('/:id([0-9]{1,})/features', auth , bodyParser(), validatePropertyFea
 //   ctx.body = result ? result : 0;
 // }
 
-async function addfeature(ctx) {
-  // TODO: add error handling
-  const body = ctx.request.body;
-  const id = parseInt(ctx.params.id);
-  const result = await features.add(id, body);
-  console.log(result);
-  //ctx.body = result.affectedRows ? {message: "liked"} : {message: "error"};
-}
+// async function addfeature(ctx) {
+//   // TODO: add error handling
+//   const body = ctx.request.body;
+//   const id = parseInt(ctx.params.id);
+//   const result = await features.add(id, body);
+//   console.log(result);
+//   //ctx.body = result.affectedRows ? {message: "liked"} : {message: "error"};
+// }
 
 // async function dislikePost(ctx) {
 //   // TODO: remove error handling
@@ -99,9 +95,14 @@ async function addfeature(ctx) {
 //   }
 // }
 
-async function createArticle(ctx) {
+async function CreateProperty(ctx) {
   const body = ctx.request.body;
+  const housefeatures = body.feature
+  delete body.feature;
   const result = await property.add(body);
+  if (housefeatures.length > 0){
+    await features.add(result.insertId, housefeatures);
+  }
   if (result.affectedRows) {
     const id = result.insertId;
     ctx.status = 201;
