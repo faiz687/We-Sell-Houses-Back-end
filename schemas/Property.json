@@ -1,0 +1,78 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"definitions": {
+
+		"property": {
+			"id": "#property",
+			"title": "Property",
+			"description": "A property on We sell house ",
+			"type": "object",
+			"properties": {
+				"title": {
+					"description": "title of the porperty",
+					"type": "string"
+				},
+				"description": {
+					"description": "description of the property",
+					"type": "string"
+				},
+				"category": {
+					"description": "category of the property",
+					"type": "string"
+				},
+				"offerprice": {
+					"description": "offer price on the property",
+					"type": "integer"
+				},
+				"location": {
+					"description": "location of the property",
+					"type": "string"
+				},
+				"imageURL": {
+					"description": "URL for main image to show for a property",
+					"type": "string",
+					"format": "uri"
+				},
+				"underoffer": {
+					"description": "Is the property under offer or not",
+					"type": "boolean"
+				},
+				"highpriority": {
+					"description": "Selling this property is a high priority or not",
+					"type": "boolean"
+				},
+				"Activated": {
+					"description": "Is this porperty visible to the public eye or not",
+					"type": "boolean"
+				},
+				"UserId": {
+					"description": "user who is creating the property",
+					"type": "integer"
+				}
+			},
+			"required": ["title", "description", "offerprice", "location", "imageURL"],
+			"additionalProperties": false
+		},
+
+		"propertyfeature": {
+			"$id": "#propertyfeature",
+			"title": "Property features",
+			"description": "Features of a property",
+			"type": "object",
+			"properties": {
+				"houseid": {
+					"description": "ID of the house",
+					"type": "integer"
+				},
+				"features": {
+					"description": "list containing all the features the house ",
+					"type": "array"
+				}
+			},
+			"required": ["houseid", "features"],
+			"additionalProperties": false
+
+		}
+    
+	}
+}

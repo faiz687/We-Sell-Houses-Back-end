@@ -6,7 +6,8 @@
  */
 const {Validator, ValidationError} = require('jsonschema');
 const userSchema = require('../schemas/User.json').definitions.user;
-const userUpdateSchema = require('../schemas/User.json').definitions.userUpdate;
+const propertySchema = require('../schemas/Property.json').definitions.property;
+const propertyfeatureSchema = require('../schemas/Property.json').definitions.propertyfeature;
 /**
  * Wrapper that returns a Koa middleware validator for a given schema.
  * @param {object} schema - The JSON schema definition of the resource
@@ -14,7 +15,6 @@ const userUpdateSchema = require('../schemas/User.json').definitions.userUpdate;
  * @returns {function} - A Koa middleware handler taking (ctx, next) params
  */
 const makeKoaValidator = (schema, resource) => {
-
   const v = new Validator();
   const validationOptions = {
     throwError: true,
@@ -47,5 +47,7 @@ const makeKoaValidator = (schema, resource) => {
 }
 /** Validate data against user schema for creating new users */
 exports.validateUser = makeKoaValidator(userSchema, 'user');
-/** Validate data against user schema for updating existing users */
-exports.validateUserUpdate = makeKoaValidator(userUpdateSchema, 'userUpdate');
+/** Validate data against property schema */
+exports.validateProperty = makeKoaValidator(propertySchema, 'property');
+/** Validate data against property feature schema */
+exports.validatePropertyFeature = makeKoaValidator(propertyfeatureSchema, 'propertyfeature');
