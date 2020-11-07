@@ -6,7 +6,7 @@ app.use(cors());
 
 const users = require('./routes/Users.js');
 
-app.use(users.routes());
+app.use(users.routes()) ;
 
 let port = process.env.PORT || 8000;
 
