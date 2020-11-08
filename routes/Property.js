@@ -18,7 +18,77 @@ const router = Router({prefix: prefix});
 //property routes
 router.get('/', getAll);
 router.post('/', auth, bodyParser(), validateProperty, CreateProperty);
+router.put('/:id([0-9]{1,})', auth, bodyParser(), validateProperty, updateProperty);
+router.get('/:id([0-9]{1,})', getById);
+router.del('/:id([0-9]{1,})', auth, deleteProperty);
 
+async function getAll(ctx) {
+  const {page=1, limit=100, order="dateCreated", direction='ASC'} = ctx.request.query;
+  const result = await property.getAll(page, limit, order, direction);
+  if (result.length) {
+    const body = result.map(post => {
+      // extract the post fields we want to send back (summary details)
+      const  { houseid, title, imageURL, category , offerprice , UserId , dateCreated} = post;
+      return { houseid, title, imageURL, category , offerprice , UserId , dateCreated}
+    }); 
+    ctx.body = body;
+  }
+}
+
+async function CreateProperty(ctx) {
+  const body = ctx.request.body;
+  const housefeatures = body.feature
+  delete body.feature;
+  const result = await property.add(body);
+  if (housefeatures.length > 0){
+    await features.add(result.insertId, housefeatures);
+  }
+  if (result.affectedRows) {
+    const id = result.insertId;
+    ctx.status = 201;
+    ctx.body = {ID: id, created: true, link: `${ctx.request.path}/${id}`};
+  }
+}
+
+async function updateProperty(ctx) {
+  const id = ctx.params.id;
+  let result = await property.getById(id);  // check it exists
+  if (result.length) {
+    let house = result[0];
+    // exclude fields that should not be updated
+    const {houseid , dateCreated ,  ...body} = ctx.request.body;
+    // overwrite updatable fields with remaining body data
+    Object.assign(house, body);
+    const {feature} = house
+    delete house.feature;
+    result = await property.update(house);        
+    if (result.affectedRows) {
+      if (feature.length > 0) {
+        await features.delById(id);
+        await features.add(id, feature);
+      }
+      ctx.body = {ID: id, updated: true, link: ctx.request.path};
+    }
+  }
+}
+
+async function getById(ctx) {
+  const id = ctx.params.id;
+  const result = await property.getById(id);
+  if (result.length) {
+    const property = result[0];
+    ctx.body = property;
+  }
+}
+
+async function deleteProperty(ctx) {
+  const id = ctx.params.id;
+  const result = await property.delById(id);  
+  if (result.affectedRows) {
+    await features.delById(id);
+    ctx.body = {ID: id, deleted: true}
+  }
+}
 
 // router.get('/:id([0-9]{1,})', getById);
 // router.put('/:id([0-9]{1,})', auth, bodyParser(), validateArticle, updateArticle);
@@ -41,24 +111,6 @@ router.post('/', auth, bodyParser(), validateProperty, CreateProperty);
 // router.post('/:id([0-9]{1,})/comments', auth, bodyParser(), addCommentIds, validateComment, addComment);
 
 
-async function getAll(ctx) {
-  const {page=1, limit=100, order="dateCreated", direction='ASC'} = ctx.request.query;
-  const result = await property.getAll(page, limit, order, direction);
-  if (result.length) {
-    const body = result.map(post => {
-      // extract the post fields we want to send back (summary details)
-      const {ID, title, summary, imageURL, authorID} = post;
-      // add links to the post summaries for HATEOAS compliance
-      // clients can follow these to find related resources
-      const links = {
-        likes: `${ctx.protocol}://${ctx.host}${prefix}/${post.ID}/likes`,
-        self: `${ctx.protocol}://${ctx.host}${prefix}/${post.ID}`
-      }
-      return {ID, title, summary, imageURL, authorID, links};
-    });
-    ctx.body = body;
-  }
-}
 
 // async function likesCount(ctx) {
 //   // TODO: add error handling
@@ -85,46 +137,6 @@ async function getAll(ctx) {
 //   ctx.body = result.affectedRows ? {message: "disliked"} : {message: "error"};
 // }
 
-// async function getById(ctx) {
-//   const id = ctx.params.id;
-//   const result = await articles.getById(id);
-//   if (result.length) {
-//     await articleViews.add(id);  // add a record of being viewed
-//     const article = result[0];
-//     ctx.body = article;
-//   }
-// }
-
-async function CreateProperty(ctx) {
-  const body = ctx.request.body;
-  const housefeatures = body.feature
-  delete body.feature;
-  const result = await property.add(body);
-  if (housefeatures.length > 0){
-    await features.add(result.insertId, housefeatures);
-  }
-  if (result.affectedRows) {
-    const id = result.insertId;
-    ctx.status = 201;
-    ctx.body = {ID: id, created: true, link: `${ctx.request.path}/${id}`};
-  }
-}
-
-// async function updateArticle(ctx) {
-//   const id = ctx.params.id;
-//   let result = await articles.getById(id);  // check it exists
-//   if (result.length) {
-//     let article = result[0];
-//     // exclude fields that should not be updated
-//     const {ID, dateCreated, dateModified, authorID, ...body} = ctx.request.body;
-//     // overwrite updatable fields with remaining body data
-//     Object.assign(article, body);
-//     result = await articles.update(article);
-//     if (result.affectedRows) {
-//       ctx.body = {ID: id, updated: true, link: ctx.request.path};
-//     }
-//   }
-// }
 
 // async function deleteArticle(ctx) {
 //   const id = ctx.params.id;
