@@ -22,7 +22,7 @@ exports.getAll = async function getAll (page, limit, order, direction) {
   return data;
 }
 
-//create a new article in the database
+//create a new feature in the database
 exports.add = async function add(houseid,Allfeature) {
     Allfeature.forEach( async (item, index) => {
     const query = "INSERT INTO Feature SET ?";
@@ -33,9 +33,9 @@ exports.add = async function add(houseid,Allfeature) {
   })
 }
 
-//delete an article by its id
+//delete all feature by house id
 exports.delById = async function delById (id) {
-  const query = "DELETE FROM articles WHERE ID = ?;";
+  const query = "DELETE FROM Feature WHERE houseid = ?;";
   const values = [id];
   const data = await db.run_query(query, values);
   return data;
