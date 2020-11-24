@@ -16,8 +16,8 @@ const prefix = '/api/v1/property';
 const router = Router({prefix: prefix});
 
 //property routes
-router.get('/', getAll);
-router.post('/', auth, bodyParser(), validateProperty, CreateProperty);
+router.get('/' , getAll);
+router.post('/' , auth, bodyParser(), validateProperty, CreateProperty);
 router.put('/:id([0-9]{1,})', auth, bodyParser(), validateProperty, updateProperty);
 router.get('/:id([0-9]{1,})', getById);
 router.del('/:id([0-9]{1,})', auth, deleteProperty);
@@ -146,7 +146,7 @@ async function deleteProperty(ctx) {
 //   }
 // }
 
-// async function getViewCount(ctx) {
+// async function getViewCount(ctx) {                         
 //   const id = ctx.params.id;
 //   const result = await articleViews.count(id);
 //   if (result.length) {

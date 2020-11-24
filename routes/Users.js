@@ -7,36 +7,24 @@ const {validateUser, validateUserUpdate} = require('../controllers/validation');
 const router = Router({prefix: '/api/v1/users'});
 
 // router.get('/' ,  auth , getAll);
-router.post('/', bodyParser(), validateUser, createUser);
-// router.get('/:id([0-9]{1,})', auth, getById);
+router.post('/', bodyParser() ,  createUser);
+router.post('/Login', bodyParser() , LoginUser);
 // router.put('/:id([0-9]{1,})', auth, bodyParser(), validateUserUpdate, updateUser);
 // router.del('/:id([0-9]{1,})', auth, deleteUser);
 
-// async function getAll(ctx){
-//   const permission = can.readAll(ctx.state.user);
-//   if (!permission.granted) {
-//     ctx.status = 403;
-//   } else {
-//     const result = await model.getAll();
-//     if (result.length) {
-//       ctx.body = result;
-//     }    
-//   }
-// }
-
-// async function getById(ctx) {
-//   const id = ctx.params.id;
-//   const result = await model.getById(id);
-//   if (result.length) {
-//     const data = result[0]
-//     const permission = can.read(ctx.state.user, data);
-//     if (!permission.granted) {
-//       ctx.status = 403;
-//     } else {
-//       ctx.body = permission.filter(data);
-//     }
-//   }
-// }
+async function getById(ctx) {
+  const id = ctx.params.id;
+  const result = await model.getById(id);
+  if (result.length) {
+    const data = result[0]
+    const permission = can.read(ctx.state.user, data);
+    if (!permission.granted) {
+      ctx.status = 403;
+    } else {
+      ctx.body = permission.filter(data);
+    }
+  }
+}
 
 
 async function createUser(ctx) {
@@ -46,7 +34,16 @@ async function createUser(ctx) {
     const id = result.insertId;
     ctx.status = 201;
     ctx.body = {ID: id, created: true, link: `${ctx.request.path}/${id}`};
-  }
+ }
+}
+
+async function LoginUser(ctx) {  
+   console.log("direct")
+   const { UserId  , username  } =  ctx.state.user
+   console.log(UserId,username)
+//   
+//   ctx.status = 200;
+//   ctx.body = { ID : UserId , Name : username   }
 }
 
 // async function updateUser(ctx) {
