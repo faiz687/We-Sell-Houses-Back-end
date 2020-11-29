@@ -3,12 +3,9 @@
 	"definitions": {
 
 		"property": {
-			"id": "#property",
-			"title": "Property",
-			"description": "A property on We sell house ",
-			"type": "object",
+			"id": "/property",
 			"properties": {
-				"title": {
+				"Title": {
 					"description": "title of the porperty",
 					"type": "string"
 				},
@@ -27,11 +24,6 @@
 				"location": {
 					"description": "location of the property",
 					"type": "string"
-				},
-				"imageURL": {
-					"description": "URL for main image to show for a property",
-					"type": "string",
-					"format": "uri"
 				},
 				"underoffer": {
 					"description": "Is the property under offer or not",
@@ -54,7 +46,7 @@
 					"type": "integer"
 				}
 			},
-			"required": ["title", "description", "offerprice", "location", "imageURL"],
+			"required": ["Title", "description", "offerprice", "location" ],
 			"additionalProperties": false
 		}
 	}

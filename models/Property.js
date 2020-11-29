@@ -12,7 +12,6 @@ exports.getById = async function getById (id) {
 exports.getAll = async function getAll (page, limit, order, direction) {
   const offset = (page - 1) * limit;
   let query;
-  console.log(order,limit,offset)
   if (direction === 'DESC') {    
     query = "SELECT * FROM Houses ORDER BY ?? DESC LIMIT ? OFFSET ?;";
   } else {
@@ -20,6 +19,7 @@ exports.getAll = async function getAll (page, limit, order, direction) {
   }
   const values = [order, parseInt(limit), parseInt(offset)];
   const data = await db.run_query(query, values);
+  console
   return data;
 }
 
@@ -45,3 +45,11 @@ exports.update = async function update (House) {
   const data = await db.run_query(query, values);
   return data;
 }
+
+//Total count of  properties
+exports.gettotalcount = async function gettotalcount() {
+  const query = "select COUNT(houseid) as totalhouse from Houses;";
+  const data = await db.run_query(query);
+  return data;
+}
+

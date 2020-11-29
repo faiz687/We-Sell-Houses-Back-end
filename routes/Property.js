@@ -1,23 +1,19 @@
 const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
-
+const fs = require('fs-extra');
 const auth = require('../controllers/auth');
-
 const property = require('../models/Property');
 const features = require('../models/Feature');
-// const articleViews = require('../models/articleViews');
-// const articleCategories = require('../models/articleCategories');
-// const comments = require('../models/comments');
-
 
 const {validateProperty,  validatePropertyFeature } = require('../controllers/validation');
-
 const prefix = '/api/v1/property';
 const router = Router({prefix: prefix});
 
+
 //property routes
 router.get('/' , getAll);
-router.post('/' , auth, bodyParser(), validateProperty, CreateProperty);
+router.get('/TotalProperty' , getpropertyCount);
+router.post('/' , auth, bodyParser(), CreateProperty);
 router.put('/:id([0-9]{1,})', auth, bodyParser(), validateProperty, updateProperty);
 router.get('/:id([0-9]{1,})', getById);
 router.del('/:id([0-9]{1,})', auth, deleteProperty);
@@ -52,12 +48,10 @@ async function CreateProperty(ctx) {
 
 async function updateProperty(ctx) {
   const id = ctx.params.id;
-  let result = await property.getById(id);  // check it exists
+  let result = await property.getById(id);
   if (result.length) {
     let house = result[0];
-    // exclude fields that should not be updated
     const {houseid , dateCreated ,  ...body} = ctx.request.body;
-    // overwrite updatable fields with remaining body data
     Object.assign(house, body);
     const {feature} = house
     delete house.feature;
@@ -90,6 +84,18 @@ async function deleteProperty(ctx) {
   }
 }
 
+async function getpropertyCount(ctx) {
+  try {
+    const result = await property.gettotalcount();
+     ctx.status = 200 
+     ctx.body = { TotalHouses: result};  
+  } catch(err) {
+    console.log(err)
+  } 
+}
+
+
+
 // router.get('/:id([0-9]{1,})', getById);
 // router.put('/:id([0-9]{1,})', auth, bodyParser(), validateArticle, updateArticle);
 // router.del('/:id([0-9]{1,})', auth, deleteArticle);
@@ -110,14 +116,6 @@ async function deleteProperty(ctx) {
 // router.get('/:id([0-9]{1,})/comments', getAllComments);
 // router.post('/:id([0-9]{1,})/comments', auth, bodyParser(), addCommentIds, validateComment, addComment);
 
-
-
-// async function likesCount(ctx) {
-//   // TODO: add error handling
-//   const id = ctx.params.id;
-//   const result = await likes.count(id);
-//   ctx.body = result ? result : 0;
-// }
 
 // async function addfeature(ctx) {
 //   // TODO: add error handling
