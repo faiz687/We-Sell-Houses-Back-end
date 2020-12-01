@@ -13,7 +13,7 @@ router.post('/Login', bodyParser() , LoginUser);
 // router.del('/:id([0-9]{1,})', auth, deleteUser);
 
 async function getById(ctx) {
-  const id = ctx.params.id;
+  const id =  ctx.params.id;
   const result = await model.getById(id);
   if (result.length) {
     const data = result[0]
