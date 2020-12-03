@@ -12,7 +12,7 @@ exports.getById = async function getById (id) {
 exports.getAll = async function getAll (page, limit, order, direction) {
   const offset = (page - 1) * limit;
   let query;
-  if (direction === 'DESC') {    
+  if (direction === 'DESC') {  
     query = "SELECT * FROM Houses ORDER BY ?? DESC LIMIT ? OFFSET ?;";
   } else {
     query = "SELECT * FROM Houses ORDER BY ?? ASC LIMIT ? OFFSET ?;";    

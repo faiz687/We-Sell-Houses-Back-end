@@ -14,11 +14,11 @@ ac.grant('admin').condition({Fn:'NOT_EQUALS', args: {'requester':'$.owner'}}).ex
 
 exports.readAll = (requester) => ac.can(requester.role).execute('read').sync().on('users');
 
-exports.read = (requester, data) =>  ac.can(requester.role).context({requester:requester.ID, owner:data.ID})
+exports.read = (requester, data) =>  ac.can(requester.role).context({requester:requester.UserId, owner:data.UserId})
                                        .execute('read').sync().on('user');
 
-exports.update = (requester, data) => ac.can(requester.role).context({requester:requester.ID, owner:data.ID})
+exports.update = (requester, data) => ac.can(requester.role).context({requester:requester.UserId, owner:data.UserId})
                                         .execute('update').sync().on('user');
 
-exports.delete = (requester, data) => ac.can(requester.role).context({requester:requester.ID, owner:data.ID})
+exports.delete = (requester, data) => ac.can(requester.role).context({requester:requester.UserId, owner:data.UserId})
                                         .execute('delete').sync().on('user');

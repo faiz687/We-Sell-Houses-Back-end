@@ -1,7 +1,6 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"definitions": {
-
 		"property": {
 			"id": "/property",
 			"properties": {
@@ -46,8 +45,51 @@
 					"type": "integer"
 				}
 			},
-			"required": ["Title", "description", "offerprice", "location" ],
+			"required": ["Title", "description", "offerprice", "location"],
+			"additionalProperties": false
+		},
+
+		"TotalHouses": {
+			"$id": "#PropertyList",
+			"title": "total Property",
+			"description": "total count of all properties on the site",
+			"type": "array"
+		},
+
+		"PropertyUpdate": {
+			"$id": "#PropertyUpdate",
+			"title": "Property Update",
+			"description": "Data a Property can update.",
+			"type": "object",
+			"properties": {
+				"title": {
+					"description": "title of the property",
+					"type": "string"
+				},
+				"description": {
+					"description": "description of the property",
+					"type": "string"
+				},
+				"category": {
+					"description": "category of the property",
+					"type": "string"
+				},
+				"offerprice": {
+					"description": "offerprice of the property",
+					"type": "integer"
+				},
+				"location": {
+					"description": "location of the property",
+					"type": "string"
+				},
+				"underoffer": {
+					"description": "Property underoffer",
+					"type": "boolean"
+				}
+
+			},
 			"additionalProperties": false
 		}
+
 	}
 }
