@@ -13,7 +13,7 @@ router.post('/', BodyParser() , ValidateUser  , CreateUser);
 router.post('/Login', Auth , BodyParser() , LoginUser);
 router.get('/:id([0-9]{1,})', Auth, GetUserById);
 router.put('/:id([0-9]{1,})', Auth, BodyParser(), ValidateUserUpdate, UpdateEstageAgent);
-router.del('/:id([0-9]{1,})', Auth, DeleteEstateAgent);
+router.del('/:id([0-9]{1,})', Auth, DeleteEstateAgent );
 
 
 
