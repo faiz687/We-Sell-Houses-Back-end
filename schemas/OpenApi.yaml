@@ -1,0 +1,234 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: API back end for We sell Houses 
+  description: Websiste backend for We sell houses , where estate agents upload properties to sell for the general public to buy
+  contact:
+    name: Faizaan chowdhary
+    email: chowdhaf@uni.coventry.ac.uk
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+servers:
+  - url: 'https://round-job-8000.codio-box.uk/api/v1/'
+    description: API back end server
+tags:
+  - name: Users
+    description: API endpoints to manage users(estate agents).
+  - name: Properties
+    description: API endpoints to perform CRUD operation for the Properties.
+paths:
+  /users:
+    summary: this endpoint represents the users (eatate agents) on the system.
+    description: >
+      This API endpoint represents an individual user (eatate agents) in the system.
+      Each specific user is represented as an 'Id'
+    post:
+      tags:
+         Users
+      description:
+        Create a new User account for estate agent.
+      requestBody:
+        description: All new details required to create an estate agent.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ./User.json#/definitions/user
+      responses:
+        '201':
+          description: estate agent created
+          content:
+            application/json:
+              schema:
+                $ref: ./User.json#/definitions/userUpdate            
+    get:
+      tags:
+        - Users
+      description:
+        Get a list of all estate agent on the system.
+      responses:
+        '200':
+          description: List of users
+          content:
+            application/json:
+              schema:
+                $ref: ./User.json#/definitions/userUpdate
+        '401':
+          description: Only admin users can list all accounts
+  /users/{id}:
+    parameters:
+      - in: path
+        name: UserId
+        schema:
+          type: integer
+        required: true
+        description: User id (integer) of the estate agent
+    get:
+      tags:
+        - Users
+      description:
+        Get estate agent by id.
+      responses:
+        '200':
+          description: View of agent record
+          content:
+            application/json:
+              schema:
+                $ref: ./User.json#/definitions/userUpdate
+        '403':
+          description: Non-admin users can only view their own record
+        '404':
+          description: Not found
+    put:
+      tags:
+        - Users
+      description:
+        Update user by id.
+      requestBody:
+        description: Update a visible property or the password.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ./User.json#/definitions/userUpdate
+      responses:
+        '200':
+          description: Confirmation and link to record.
+          content:
+            application/json:
+              schema:
+                $ref: ./User.json#/definitions/userUpdate
+        '404':
+          description: Not found
+    delete:
+      tags:
+        - Users
+      description:
+        Delete user by id.
+      responses:
+        '200':
+          description: Confirmation of deletion.
+          content:
+            application/json:
+              schema:
+                $ref: ./User.json#/definitions/userUpdate
+        '401':
+          description: Only admin users can delete accounts
+        '404':
+          description: Not found
+  /property:
+    summary: this endpoint represents all the houses on the system.
+    description: >
+      This API endpoint represents an house in the system.
+      Each specific house is represented as an 'houseid'
+    post:
+      tags:
+         House
+      description:
+        Create a new property to display to users.
+      requestBody:
+        description: All new details required to create a property.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ./Property.json#/definitions/property
+      responses:
+        '201':
+          description: House created
+          content:
+            application/json:
+              schema:
+                $ref: ./Property.json#/definitions/property            
+    get:
+      tags:
+        - Houses
+      description:
+        Get a list of all Houses on the system.
+      responses:
+        '200':
+          description: List of Houses
+          content:
+            application/json:
+              schema:
+                $ref: ./Property.json#/definitions/property
+        '401':
+          description: Only admin users can list all accounts
+#   /property/TotalProperty:
+#       summary: this endpoint sends the total number of houses on the system.
+#       description: > 
+#          This API endpoint will send the toal number of houses on to the system.
+#       get:
+#         tags:
+#           Houses
+#         description:
+#           get a total count of houses on the system.
+#         responses:
+#           '200':
+#           description: total count of houses
+#           content:
+#             application/json:
+#               schema:
+#                 $ref: ./Property.json#/definitions/property
+  /property/{id}:
+    parameters:
+      - in: path
+        name: Houseid
+        schema:
+          type: integer
+        required: true
+        description: House id of the property.
+    get:
+      tags:
+        - house
+      description:
+        Get house by id.
+      responses:
+        '200':
+          description: return the specific property.
+          content:
+            application/json:
+              schema:
+                $ref: ./Property.json#/definitions/property
+        '403':
+          description: Non-admin users can only view their own record
+        '404':
+          description: Not found
+    put:
+      tags:
+        - house
+      description:
+        Update house by house id.
+      requestBody:
+        description: Update the property.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ./Property.json#/definitions/property
+      responses:
+        '200':
+          description: Confirmation and link to the updated property.
+          content:
+            application/json:
+              schema:
+                $ref: ./Property.json#/definitions/property
+        '404':
+          description: Not found
+    delete:
+      tags:
+        - property
+      description:
+        Delete property by house id.
+      responses:
+        '200':
+          description: Confirmation of deletion.
+          content:
+            application/json:
+              schema:
+                $ref: ./Property.json#/definitions/property
+        '401':
+          description: Only admin users can delete property
+        '404':
+          description: Not found
