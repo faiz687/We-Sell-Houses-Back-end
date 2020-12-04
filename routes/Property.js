@@ -35,7 +35,8 @@ async function getpropertyCount(ctx) {
      ctx.status = 200 
      ctx.body = { TotalHouses: result};  
   } catch(err) {
-    console.log(err)
+    ctx.status = 500
+    ctx.body = { error: err };
   } 
 }
 
@@ -92,14 +93,5 @@ async function deleteProperty(ctx) {
   }
 }
 
-async function getpropertyCount(ctx) {
-  try {
-    const result = await property.gettotalcount();
-     ctx.status = 200 
-     ctx.body = { TotalHouses: result};  
-  } catch(err) {
-    console.log(err)
-  } 
-}
 
 module.exports = router;

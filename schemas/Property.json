@@ -43,9 +43,14 @@
 				"UserId": {
 					"description": "user who is creating the property",
 					"type": "integer"
+				},
+        "imageURL": {
+					"description": "image of the property",
+					"type": "string"
 				}
+        
 			},
-			"required": ["Title", "description", "offerprice", "location"],
+			"required": ["Title", "description", "offerprice", "location" , "imageURL"],
 			"additionalProperties": false
 		},
 

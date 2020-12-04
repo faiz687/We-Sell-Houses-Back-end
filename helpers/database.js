@@ -1,7 +1,7 @@
 /**
  * A module to run SQL queries on MySQL on behalf of the API models.
  * @module helpers/database
- * @author Colin Stephen
+ * @author faizaan chowdhary
  * @see models/* for the models that require this module
  */
 const mysql = require('promise-mysql');  
