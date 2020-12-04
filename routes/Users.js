@@ -16,90 +16,126 @@ router.put('/:id([0-9]{1,})', Auth, BodyParser(), ValidateUserUpdate, UpdateEsta
 router.del('/:id([0-9]{1,})', Auth, DeleteEstateAgent );
 
 
-
 async function GetAll(ctx) {
-  const permission = Can.readAll(ctx.state.user);
-  if (!permission.granted) {
-    ctx.status = 403;
-  } else {
-    const result = await Model.getAll();
-    if (result.length) {
-      ctx.status = 200;
-      ctx.body = result;
-    }    
-  }
-}
-
-
-async function CreateUser(ctx) {
-  const body = ctx.request.body;
-  const result = await Model.add(body);
-  if (result.affectedRows) {
-    const id = result.insertId;
-    ctx.status = 201;
-    ctx.body = {ID: id, created: true, link: `${ctx.request.path}/${id}`};
- }
-}
-
-
-async function LoginUser(ctx) {  
-   const { UserId  , username  } =  ctx.state.user
-   ctx.status = 200;
-   ctx.body = { ID : UserId , Name : username   }
-}
-
-
-async function GetUserById(ctx) {
-  const id = ctx.params.id;
-  const result = await Model.getById(id);
-  if (result.length) {
-    const data = result[0]
-    const permission = Can.read(ctx.state.user, data);
+  try {
+    const permission = Can.readAll(ctx.state.user);
     if (!permission.granted) {
       ctx.status = 403;
     } else {
-      ctx.status = 200;
-      ctx.body = permission.filter(data);
-    }
-  }
-}
-
-
-async function UpdateEstageAgent(ctx) {
-  const id = ctx.params.id;
-  let result = await Model.getById(id); 
-  if (result.length) {
-    let data = result[0];
-    const permission = Can.update(ctx.state.user, data);
-    if (!permission.granted) {
-      ctx.status = 403;
-    } else {
-      const UserDataToUpdate = permission.filter(ctx.request.body);
-      Object.assign(UserDataToUpdate,{UserId: id});      
-      result = await Model.update(UserDataToUpdate);
-      if (result.affectedRows) {
+      const result = await Model.getAll();
+      if (result.length) {
         ctx.status = 200;
-        ctx.body = {ID: id, updated: true, link: ctx.request.path};
+        ctx.body = result;
       }
     }
+  } catch(err) {
+    ctx.status = 500;
+    ctx.body = err
+  }
+}
+
+async function CreateUser(ctx) {
+  try {
+    const body = ctx.request.body;
+    const result = await Model.add(body);
+    if (result.affectedRows) {
+      const id = result.insertId;
+      ctx.status = 201;
+      ctx.body = {ID: id, created: true, link: `${ctx.request.path}/${id}`};
+    }
+  } catch(err) {
+    ctx.status = 500;
+    ctx.body = err
+  }
+}
+
+async function LoginUser(ctx) {  
+  try {
+    const { UserId  , username  } =  ctx.state.user
+    ctx.status = 200;
+    ctx.body = { ID : UserId , Name : username   }
+  } catch(err) {
+    ctx.status = 500;
+    ctx.body = err
+  }
+}
+
+async function GetUserById(ctx) {
+  try {
+    const id = ctx.params.id;
+    const result = await Model.getById(id);
+    if (result.length) {
+      const data = result[0]
+      const permission = Can.read(ctx.state.user, data);
+      if (!permission.granted) {
+        ctx.status = 403;
+      } else {
+        ctx.status = 200;
+        ctx.body = permission.filter(data);
+      }
+    }
+  } catch(err) {
+    ctx.status = 500;
+    ctx.body = err
+  }
+}
+
+async function UpdateEstageAgent(ctx) {
+  try {
+    const id = ctx.params.id;
+    let result = await Model.getById(id); 
+    if (result.length) {
+      let data = result[0];
+      const permission = Can.update(ctx.state.user, data);
+      if (!permission.granted) {
+        ctx.status = 403;
+      } else {
+        const UserDataToUpdate = permission.filter(ctx.request.body);
+        Object.assign(UserDataToUpdate,{UserId: id});      
+        result = await Model.update(UserDataToUpdate);
+        if (result.affectedRows) {
+          ctx.status = 200;
+          ctx.body = {ID: id, updated: true, link: ctx.request.path};
+        }
+      }
+    }
+  } catch(err) {
+    ctx.status = 500;
+    ctx.body = err
   }
 }
 
 async function DeleteEstateAgent(ctx) {
-  const id = ctx.params.id;
-  let result = await Model.getById(id);
-  if (result.length) {
-    const data = result[0];
-    const permission = Can.delete(ctx.state.user, data);
-    if (!permission.granted) {
-    } else {
-      result = await Model.DeleteAgentByID(id);
-      if (result.affectedRows) {
-        ctx.statu = 200;
-        ctx.body = {ID: id, deleted: true}
+  try {
+    const id = ctx.params.id;
+    let result = await Model.getById(id);
+    if (result.length) {
+      const data = result[0];
+      const permission = Can.delete(ctx.state.user, data);
+      if (!permission.granted) {
+        ctx.status = 403;
+      } else {
+        result = await Model.DeleteAgentByID(id);
+        if (result.affectedRows) {
+          ctx.status = 200;
+          ctx.body = {ID: id, deleted: true}
       }      
     }
   }
+    
+    
+    
+    
+   
+  } catch(err) {
+    ctx.status = 500;
+    ctx.body = err
+  } 
+  
+  
+  
+  
+
 }
 
 module.exports = router;

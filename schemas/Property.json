@@ -54,12 +54,18 @@
 			"additionalProperties": false
 		},
 
-		"TotalHouses": {
-			"$id": "#PropertyList",
-			"title": "total Property",
+		"PropertyCount": {
+			"$id": "#PropertyCount",
+			"title": "Total Property Count",
 			"description": "total count of all properties on the site",
-			"type": "array"
-		},
+			"type": "object",
+      "properties": {
+        "totalhouse": {
+          "description": "total count of all properties",
+          "type": "integer"
+        }
+      }
+    },
 
 		"PropertyUpdate": {
 			"$id": "#PropertyUpdate",
@@ -94,7 +100,54 @@
 
 			},
 			"additionalProperties": false
-		}
-
+		},
+    
+    "PropertyUpdated": {
+      "$id": "#PropertyUpdated",
+      "title": "Property Updated",
+      "description": "Confirmation of a successful Property (house) update/creation",
+      "type": "object",
+      "properties": {
+        "ID": {
+          "description": "ID of the updated Property record",
+          "type": "integer"
+        },
+        "updated": {
+          "description": "Boolean indicator of success",
+          "type": "boolean"
+        },
+        "link": {
+          "description": "Path to retrieve Property record",
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    
+    "PropertyList": {
+      "$id": "#PropertyList",
+      "title": "Property List",
+      "description": "List of all Property on the system.",
+      "type": "array",
+      "items": {"$ref": "#/definitions/property"}
+    },
+    
+    "PropertyDeleted": {
+      "$id": "#PropertyDeleted",
+      "title": "Property Deleted",
+      "description": "Confirmation of a successful deletion",
+      "type": "object",
+      "properties": {
+        "ID": {
+          "description": "ID of the Deleted house record",
+          "type": "integer"
+        },
+        "deleted": {
+          "description": "Boolean indicator of success",
+          "type": "boolean"
+        }
+      }
+    }
+          
 	}
 }

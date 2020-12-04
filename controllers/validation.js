@@ -1,7 +1,7 @@
 /**
  * A module to run JSON Schema based validation on request/response data.
  * @module controllers/validation
- * @author Colin Stephen
+ * @author Faizaan Chowdhary
  * @see schemas/* for JSON Schema definition files
  */
 const {Validator, ValidationError} = require('jsonschema');
@@ -11,7 +11,7 @@ const UserUpdateSchema = require('../schemas/User.json').definitions.userUpdate;
 /**
  * Wrapper that returns a Koa middleware validator for a given schema.
  * @param {object} schema - The JSON schema definition of the resource
- * @param {string} resource - The name of the resource e.g. 'article'
+ * @param {string} resource - The name of the resource e.g. 'property'
  * @returns {function} - A Koa middleware handler taking (ctx, next) params
  */
 const makeKoaValidator = (schema, resource) => {
