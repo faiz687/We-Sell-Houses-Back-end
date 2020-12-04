@@ -19,7 +19,6 @@ exports.getAll = async function getAll (page, limit, order, direction) {
   }
   const values = [order, parseInt(limit), parseInt(offset)];
   const data = await db.run_query(query, values);
-  console
   return data;
 }
 
