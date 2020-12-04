@@ -1,13 +1,13 @@
 openapi: 3.0.0
 info:
   version: 1.0.0
-  title: API back end for We sell Houses 
+  title: API back end for We sell Houses.
   description: Websiste backend for We sell houses , where estate agents upload properties to sell for the general public to buy
   contact:
-    name: Faizaan chowdhary
+    name: Faizaan chowdhary.
     email: chowdhaf@uni.coventry.ac.uk
   license:
-    name: Apache 2.0
+    name: Apache 2.0.
     url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
 servers:
   - url: 'https://round-job-8000.codio-box.uk/api/v1/'
@@ -16,7 +16,9 @@ tags:
   - name: Users
     description: API endpoints to manage users(estate agents).
   - name: Properties
-    description: API endpoints to perform CRUD operation for the Properties.
+    description: API endpoints to perform CRUD operation for the Properties (Houses).
+  - name: TotalProperty
+    description: API endpoints to get total count of properties (house).
 paths:
   /users:
     summary: this endpoint represents the users (eatate agents) on the system.
@@ -25,7 +27,7 @@ paths:
       Each specific user is represented as an 'Id'
     post:
       tags:
-         Users
+        - Users
       description:
         Create a new User account for estate agent.
       requestBody:
@@ -41,7 +43,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./User.json#/definitions/userUpdate            
+                $ref: ./User.json#/definitions/userUpdated
+        '400':
+          description: Validation error, incorrect or incomplete details entered.
+        '500':
+          description: Internal server error, user could not be created, see error message.
     get:
       tags:
         - Users
@@ -49,21 +55,23 @@ paths:
         Get a list of all estate agent on the system.
       responses:
         '200':
-          description: List of users
-          content:
+         description: List of users.
+         content:
             application/json:
               schema:
-                $ref: ./User.json#/definitions/userUpdate
-        '401':
-          description: Only admin users can list all accounts
+                $ref: ./User.json#/definitions/userUpdated
+        '403':
+          description: Only admin users can get a list all accounts.
+        '500':
+          description: Internal server error, user could not be created, see error message.
   /users/{id}:
     parameters:
       - in: path
-        name: UserId
+        name: id
         schema:
           type: integer
         required: true
-        description: User id (integer) of the estate agent
+        description: User id  of the estate agent
     get:
       tags:
         - Users
@@ -75,18 +83,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./User.json#/definitions/userUpdate
+                $ref: ./User.json#/definitions/userUpdated
         '403':
           description: Non-admin users can only view their own record
         '404':
           description: Not found
+        '500':
+          description: Internal server error, user could not be created, see error message.                  
     put:
       tags:
         - Users
       description:
         Update user by id.
       requestBody:
-        description: Update a visible property or the password.
+        description: Update a visible property of the user or their password.
         required: true
         content:
           application/json:
@@ -98,9 +108,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./User.json#/definitions/userUpdate
+                $ref: ./User.json#/definitions/userUpdated
         '404':
-          description: Not found
+          description: User Not found
+        '403':
+          description: Permission denied to update
+        '500': 
+          description: Internal server error, user could not be updated, see error message.                
     delete:
       tags:
         - Users
@@ -112,11 +126,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./User.json#/definitions/userUpdate
-        '401':
+                $ref: ./User.json#/definitions/userDeleted
+        '403':
           description: Only admin users can delete accounts
         '404':
-          description: Not found
+          description: User Not found
+        '500': 
+          description: Internal server error, user could not be updated, see error message.  
   /property:
     summary: this endpoint represents all the houses on the system.
     description: >
@@ -124,9 +140,9 @@ paths:
       Each specific house is represented as an 'houseid'
     post:
       tags:
-         House
+        - Properties
       description:
-        Create a new property to display to users.
+        Create a new property to display with all details.
       requestBody:
         description: All new details required to create a property.
         required: true
@@ -140,68 +156,56 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./Property.json#/definitions/property            
+                $ref: ./Property.json#/definitions/PropertyUpdated 
+        '400':
+          description: Validation error, incorrect or incomplete details entered.
+        '500':
+          description: Internal server error, property could not be created, see error message.
     get:
       tags:
-        - Houses
+        - Properties
       description:
-        Get a list of all Houses on the system.
+        Get a list of all Houses.
       responses:
         '200':
           description: List of Houses
           content:
             application/json:
               schema:
-                $ref: ./Property.json#/definitions/property
-        '401':
-          description: Only admin users can list all accounts
-#   /property/TotalProperty:
-#       summary: this endpoint sends the total number of houses on the system.
-#       description: > 
-#          This API endpoint will send the toal number of houses on to the system.
-#       get:
-#         tags:
-#           Houses
-#         description:
-#           get a total count of houses on the system.
-#         responses:
-#           '200':
-#           description: total count of houses
-#           content:
-#             application/json:
-#               schema:
-#                 $ref: ./Property.json#/definitions/property
+                $ref: ./Property.json#/definitions/PropertyList
+        '500':
+          description: Internal server error, see error message.
   /property/{id}:
     parameters:
       - in: path
-        name: Houseid
+        name: id
         schema:
           type: integer
         required: true
         description: House id of the property.
     get:
       tags:
-        - house
+        - Properties
       description:
-        Get house by id.
+        Get Property by its house-id.
       responses:
         '200':
-          description: return the specific property.
+          description: View of the specific property.
           content:
             application/json:
               schema:
                 $ref: ./Property.json#/definitions/property
-        '403':
-          description: Non-admin users can only view their own record
         '404':
           description: Not found
+        '500':
+          description: Internal server error, see error message.  
     put:
       tags:
-        - house
+        - Properties
       description:
-        Update house by house id.
+         Update house by house id.
       requestBody:
-        description: Update the property.
+        description: Update any property of the house.
         required: true
         content:
           application/json:
@@ -213,12 +217,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./Property.json#/definitions/property
+                $ref: ./Property.json#/definitions/PropertyUpdated
         '404':
-          description: Not found
+          description: house Not found.
+        '403':
+          description: Permission denied to update. Only house admin can perfomr update.
+        '500': 
+          description: Internal server error, see error message. 
     delete:
       tags:
-        - property
+        - Properties
       description:
         Delete property by house id.
       responses:
@@ -227,8 +235,28 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./Property.json#/definitions/property
+                $ref: ./Property.json#/definitions/PropertyDeleted
         '401':
-          description: Only admin users can delete property
+          description: Only admin of house can delete the property.
         '404':
-          description: Not found
+          description: Not found.
+        '500': 
+          description: Internal server error, see error message. 
+  /property/TotalProperty:
+    summary: this endpoint sends the total number of houses on the system.
+    description: > 
+      This API endpoint will send the toal number of houses on to the system.
+    get:
+      tags:
+         - TotalProperty
+      description:
+          get a total count of houses on the system.
+      responses:
+        '200':
+          description: total count of houses.
+          content:
+           application/json:
+             schema:
+               $ref: ./Property.json#/definitions/PropertyCount
+        '500':
+            description: Internal server error, see error message.

@@ -29,32 +29,68 @@
 			"required": ["username", "email", "password", "signupcode"],
 			"additionalProperties": false
 		},
+    
+    "userUpdate": {
+      "$id": "#userUpdate",
+      "title": "User Update",
+      "description": "Data a user can update.",
+      "type": "object",
+      "properties": {
+        "username": {
+          "description": "User Name",
+          "type": "string"
+        },
+        "email": {
+          "description": "Unique email address",
+          "type": "string",
+          "format": "email"
+        },
+        "password": {
+          "description": "Password for registration",
+          "type": "string",
+          "minLength": 6
+        }
+      },
+      "additionalProperties": false
+    },
 
-		"userUpdate": {
-			"$id": "#userUpdate",
-			"title": "User Update",
-			"description": "Data a user can update (excludes username).",
-			"type": "object",
-			"properties": {
-				"username": {
-					"description": "Username of estate agent",
-					"type": "string"
-				},
-				"email": {
-					"description": "email of estate agent",
-					"type": "string",
-					"format": "email"
-				},
-				"role": {
-					"description": "role of the registered user",
-					"type": "string"
-				},
-				"password": {
-					"description": "Unique email address",
-					"type": "string"
-				}
-			},
-			"additionalProperties": false
-		}
+		"userUpdated": {
+      "$id": "#userUpdated",
+      "title": "User Updated",
+      "description": "Confirmation of a successful user update/creation",
+      "type": "object",
+      "properties": {
+        "ID": {
+          "description": "ID of the updated user record",
+          "type": "integer"
+        },
+        "updated": {
+          "description": "Boolean indicator of success",
+          "type": "boolean"
+        },
+        "link": {
+          "description": "Path to retrieve user record",
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+        
+    "userDeleted": {
+      "$id": "#userDeleted",
+      "title": "User Deleted",
+      "description": "Confirmation of a successful deletion",
+      "type": "object",
+      "properties": {
+        "ID": {
+          "description": "ID of the updated user record",
+          "type": "integer"
+        },
+        "deleted": {
+          "description": "Boolean indicator of success",
+          "type": "boolean"
+        }
+      }
+    }
 	}
 }
