@@ -7,7 +7,7 @@
 const AccessControl = require('role-acl');
 const ac = new AccessControl();
 
-// controls for CRUD operations on user records
+ // controls for CRUD operations on user records
 ac
   .grant('user')
   .condition({Fn:'EQUALS', args: {'requester':'$.owner'}})
