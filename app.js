@@ -1,3 +1,10 @@
+/**
+ * @author faizaan chowdhary
+ * @version v1
+ * @description This file initialises the server and loads all the routes.
+ * @requires koa
+ * @requires @koa/cors
+ */
 const Koa = require('koa');
 const cors = require('@koa/cors');
 
