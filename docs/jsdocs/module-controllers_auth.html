@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: DatabaseException</title>
+    <title>JSDoc: Module: controllers/auth</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: DatabaseException</h1>
+    <h1 class="page-title">Module: controllers/auth</h1>
 
     
 
@@ -28,8 +28,10 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="module-helpers_database.html">helpers/database</a>~</span>DatabaseException<span class="signature">(message, code, id)</span><span class="type-signature"></span></h2>
+        
+            
+        
+            
         
     
 </header>
@@ -38,11 +40,107 @@
     <div class="container-overview">
     
         
+            <div class="description">A module to set up passport and its authentication stratergies.Importing this module 
+in a route gives a middleware handler that can be used to protect downstream handlers by rejecting unauthenticated requests.</div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
 
     
 
     
-    <h4 class="name" id="DatabaseException"><span class="type-signature"></span>new DatabaseException<span class="signature">(message, code, id)</span><span class="type-signature"></span></h4>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Faizaan Chowdhary</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_auth.js.html">controllers/auth.js</a>, <a href="controllers_auth.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>strategies/basic* for all the stratergies.</li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="module:controllers/auth"><span class="type-signature"></span>module:controllers/auth<span class="type-signature"></span></h4>
     
 
     
@@ -50,7 +148,7 @@
 
 
 <div class="description">
-    A custom error constructor to re-raise DB errors in a sanitised way.
+    Authenticating the client by their username and password
 </div>
 
 
@@ -59,104 +157,6 @@
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>message</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">the error message</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>code</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-|
-
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">the original error's error code</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>id</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">a UUID identifier for the error instanced</td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -192,7 +192,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_database.js.html">helpers/database.js</a>, <a href="helpers_database.js.html#line43">line 43</a>
+        <a href="controllers_auth.js.html">controllers/auth.js</a>, <a href="controllers_auth.js.html#line14">line 14</a>
     </li></ul></dd>
     
 
@@ -222,6 +222,7 @@
 
 
 
+        
     
     </div>
 

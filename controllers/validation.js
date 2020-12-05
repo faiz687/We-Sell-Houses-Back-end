@@ -45,6 +45,7 @@ const makeKoaValidator = (schema, resource) => {
   }
   return handler;
 }
+
 /** Validate data against user schema for creating new users */
 exports.ValidateUser = makeKoaValidator(userSchema, 'user');
 /** Validate data against property schema */

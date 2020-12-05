@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: controllers/validation</title>
+    <title>JSDoc: Module: strategies/basic</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: controllers/validation</h1>
+    <h1 class="page-title">Module: strategies/basic</h1>
 
     
 
@@ -38,7 +38,7 @@
     <div class="container-overview">
     
         
-            <div class="description">A module to run JSON Schema based validation on request/response data.</div>
+            <div class="description">A module containing all the stratergies defined for authenticating user.</div>
         
 
         
@@ -94,19 +94,12 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_validation.js.html">controllers/validation.js</a>, <a href="controllers_validation.js.html#line1">line 1</a>
+        <a href="strategies_basic.js.html">strategies/basic.js</a>, <a href="strategies_basic.js.html#line1">line 1</a>
     </li></ul></dd>
     
 
     
 
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li>schemas/* for JSON Schema definition files</li>
-        </ul>
-    </dd>
     
 
     
@@ -138,6 +131,16 @@
     
 
     
+        <h3 class="subsection-title">Requires</h3>
+
+        <ul>
+            <li>module:passport-http</li>
+        
+            <li>module:koa-bodyparser</li>
+        
+            <li>module:/models/Users'</li>
+        </ul>
+    
 
     
 
@@ -152,13 +155,13 @@
 
         
             
-<h4 class="name" id=".ValidateProperty"><span class="type-signature">(static) </span>ValidateProperty<span class="type-signature"></span></h4>
+<h4 class="name" id=".Sratergy"><span class="type-signature">(static) </span>Sratergy<span class="type-signature"></span></h4>
 
 
 
 
 <div class="description">
-    Validate data against property schema
+    Stratergy object containing all functions to verfiy user.
 </div>
 
 
@@ -196,7 +199,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_validation.js.html">controllers/validation.js</a>, <a href="controllers_validation.js.html#line52">line 52</a>
+        <a href="strategies_basic.js.html">strategies/basic.js</a>, <a href="strategies_basic.js.html#line60">line 60</a>
     </li></ul></dd>
     
 
@@ -214,78 +217,26 @@
 
         
             
-<h4 class="name" id=".ValidateUser"><span class="type-signature">(static) </span>ValidateUser<span class="type-signature"></span></h4>
+<h4 class="name" id="~An"><span class="type-signature">(inner, constant) </span>An<span class="type-signature"> :object</span></h4>
 
 
 
 
 <div class="description">
-    Validate data against user schema for creating new users
+    object using passport-http module to verify User.
 </div>
 
 
 
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_validation.js.html">controllers/validation.js</a>, <a href="controllers_validation.js.html#line50">line 50</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
+    <h5>Type:</h5>
+    <ul>
+        <li>
             
-<h4 class="name" id=".ValidateUserUpdate"><span class="type-signature">(static) </span>ValidateUserUpdate<span class="type-signature"></span></h4>
+<span class="param-type">object</span>
 
 
-
-
-<div class="description">
-    Validate data against the user schema for updating existing estatet agensts on to the system
-</div>
-
-
+        </li>
+    </ul>
 
 
 
@@ -320,7 +271,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_validation.js.html">controllers/validation.js</a>, <a href="controllers_validation.js.html#line54">line 54</a>
+        <a href="strategies_basic.js.html">strategies/basic.js</a>, <a href="strategies_basic.js.html#line56">line 56</a>
     </li></ul></dd>
     
 
@@ -348,7 +299,7 @@
     
 
     
-    <h4 class="name" id="~makeKoaValidator"><span class="type-signature">(inner) </span>makeKoaValidator<span class="signature">(schema, resource)</span><span class="type-signature"> &rarr; {function}</span></h4>
+    <h4 class="name" id="~checkUserAndPass"><span class="type-signature">(inner) </span>checkUserAndPass<span class="signature">(user, password)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
     
 
     
@@ -356,7 +307,7 @@
 
 
 <div class="description">
-    Wrapper that returns a Koa middleware validator for a given schema.
+    function to verify if the user exist.
 </div>
 
 
@@ -392,7 +343,7 @@
 
         <tr>
             
-                <td class="name"><code>schema</code></td>
+                <td class="name"><code>user</code></td>
             
 
             <td class="type">
@@ -408,14 +359,14 @@
 
             
 
-            <td class="description last">The JSON schema definition of the resource</td>
+            <td class="description last">the current user.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>resource</code></td>
+                <td class="name"><code>password</code></td>
             
 
             <td class="type">
@@ -431,7 +382,7 @@
 
             
 
-            <td class="description last">The name of the resource e.g. 'property'</td>
+            <td class="description last">the password user has entered.</td>
         </tr>
 
     
@@ -472,7 +423,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_validation.js.html">controllers/validation.js</a>, <a href="controllers_validation.js.html#line17">line 17</a>
+        <a href="strategies_basic.js.html">strategies/basic.js</a>, <a href="strategies_basic.js.html#line24">line 24</a>
     </li></ul></dd>
     
 
@@ -501,7 +452,7 @@
 
         
 <div class="param-desc">
-    - A Koa middleware handler taking (ctx, next) params
+    returns a boolean indicating weather a match or not.
 </div>
 
 
@@ -512,7 +463,189 @@
     </dt>
     <dd>
         
-<span class="param-type">function</span>
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~verifyPassword"><span class="type-signature">(inner) </span>verifyPassword<span class="signature">(user, password)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    function to verify the password.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>user</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the current user.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>password</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the password user has entered.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="strategies_basic.js.html">strategies/basic.js</a>, <a href="strategies_basic.js.html#line12">line 12</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    returns a boolean indicating weather a match or not.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
 
 
     </dd>
@@ -546,7 +679,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sat Dec 05 2020 18:58:58 GMT+0000 (GMT)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sat Dec 05 2020 18:58:59 GMT+0000 (GMT)
 </footer>
 
 <script> prettyPrint(); </script>

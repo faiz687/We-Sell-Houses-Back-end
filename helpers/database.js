@@ -3,6 +3,8 @@
  * @module helpers/database
  * @author faizaan chowdhary
  * @see models/* for the models that require this module
+ * @requires promise-mysql
+ * @requires uuid
  */
 const mysql = require('promise-mysql');  
 const info = require('../config');
@@ -31,7 +33,6 @@ exports.run_query = async function run_query(query, values) {
     throw new DatabaseException("Database error.", error.code, errorId);
   }
 }
-
 /**
  * A custom error constructor to re-raise DB errors in a sanitised way.
  * @class

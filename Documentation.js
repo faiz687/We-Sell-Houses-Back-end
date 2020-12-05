@@ -1,5 +1,5 @@
 /**
- * @file "We sell houses" OpenAPI Documentation Server
+ * @file We sell houses OpenAPI Documentation Server
  * @author faizaan chowdhary
  * @version v1
  * @description This file initialises the Documentation server and mounts its static paths.
