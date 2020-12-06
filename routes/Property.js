@@ -15,9 +15,9 @@ const auth = require('../controllers/auth');
 const property = require('../models/Property');
 const features = require('../models/Feature');
 const {  ValidateProperty , validatePropertyFeature } = require('../controllers/validation');
+const Can = require('../permissions/property');
 const prefix = '/api/v1/property';
 const router = Router({prefix: prefix});
-
 
 //property routes
 router.get('/',getAll);
@@ -48,9 +48,12 @@ async function getAll(ctx) {
     
     const result = await property.getAll(page, limit, order, direction);
     if (result.length) {
-      const body = result.map(post => {
-      const  { houseid, title, imageURL, category , offerprice , UserId , dateCreated} = post;
-      return { houseid, title, imageURL, category , offerprice , UserId , dateCreated}
+      const body = result.map(post => {        
+      const  { houseid, Title,  imageURL, category , offerprice , UserId , dateCreated} = post;
+      // implment hateoas principe to open house specific page when user click on house link.
+      const links = { self: `${ctx.protocol}://${ctx.host}${prefix}/${post.houseid}`}
+      return { houseid, Title,  imageURL,  category , offerprice , UserId , dateCreated , links}
+         
       });
       ctx.body = body;
     }
@@ -107,23 +110,28 @@ async function CreateProperty(ctx) {
  * @param {integer} id - the houseid of the house to update.
  * @name updateProperty {PUT} /api/v1/property/:id
  */
-async function updateProperty(ctx) {
+async function updateProperty(ctx) {  
   try {
     const id = ctx.params.id;
     let result = await property.getById(id);
     if (result.length) {
       let house = result[0];
-      const { houseid , dateCreated ,  ...body } = ctx.request.body;
-      Object.assign(house, body);
-      const  { feature }  = house 
-      delete house.feature;
-      result = await property.update(house);        
-      if (result.affectedRows) {
-        if (feature.length > 0) {
-          await features.delById(id);
-          await features.add(id, feature);
+      const permission = Can.update(ctx.state.user, house);
+      if (!permission.granted) {
+        ctx.status = 403;
+      } else {
+        const { houseid , dateCreated ,  ...body } = ctx.request.body;
+        Object.assign(house, body);
+        const  { feature }  = house 
+        delete house.feature;
+        result = await property.update(house);
+        if (result.affectedRows) {
+          if (feature.length > 0) {
+            await features.delById(id);
+            await features.add(id, feature);
+          }
+          ctx.body = {ID: id, updated: true, link: ctx.request.path};
         }
-        ctx.body = {ID: id, updated: true, link: ctx.request.path};
       }
     }
   } catch (err) {
@@ -144,12 +152,15 @@ async function getById(ctx) {
     if (result.length) {
       const property = result[0];
       ctx.body = property;
-    }
+    } else {
+      ctx.status = 204 //No Content
+}
   } catch (err) {
   ctx.status = 500;
   ctx.body = err
   }
 }
+
 /**
  * The Route to delete the specific house.
  * @function
@@ -158,13 +169,23 @@ async function getById(ctx) {
  */
 async function deleteProperty(ctx) {
   try {
+
     const id = ctx.params.id;
-    const result = await property.delById(id);  
-    if (result.affectedRows) {
-      await features.delById(id);
-      ctx.body = {ID: id, deleted: true}
-    }
-  } catch (err) {
+    const result = await property.getById(id);
+     if (result.length) {
+       const data = result[0];
+       const permission = Can.delete(ctx.state.user, data);
+        if (!permission.granted) {
+          ctx.status = 403;
+        } else {
+        const result = await property.delById(id);  
+        await features.delById(id);
+        if (result.affectedRows) {
+          ctx.body = {ID: id, deleted: true}
+        }
+      }
+     }
+  }catch (err) {
     ctx.status = 500;
     ctx.body = err
   }
