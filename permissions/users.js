@@ -28,7 +28,8 @@ ac
   .on('users');
 ac
   .grant('admin')
-  .execute('update').on('user');
+  .execute('update')
+  .on('user');
 ac
   .grant('admin')
   .condition({Fn:'NOT_EQUALS', args: {'requester':'$.owner'}})
