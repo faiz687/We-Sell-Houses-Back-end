@@ -1,3 +1,10 @@
+/**
+ * A module containing all the test functions for users endpoints.
+ * @module __tests__/user_Routes
+ * @author Faizaan Chowdhary
+ * @requires supertest
+ * @requires /app
+ */
 const request = require('supertest')
 const app = require('../app')
 let Userid = 0
@@ -34,11 +41,24 @@ describe('TESTING : Create a new user', () => {
 describe('TESTING : Create a new user : Validation Error', () => { 
   it('Should Return Status Code : 400', async () => {
       const res = await request(app.callback()).post('/api/v1/users').send({
+      
       password: 'password',
       email: 'unique_email@example.com',
       signupcode: 'we_sell_houses_agent'
       })
       expect(res.statusCode).toEqual(400)})});
+
+describe('TESTING : Create a new user : Invalid Signup Code', () => { 
+  it('Should Return Status Code : 400', async () => {
+      const res = await request(app.callback()).post('/api/v1/users').send({
+      username: 'unique_1122335',
+      password: 'password',
+      email: 'unique_email@example.com',
+      signupcode: 'we_houses_agent'
+      })
+      expect(res.statusCode).toEqual(400)
+      expect(res.body).toHaveProperty('Err', "In-valid sign-up code")
+  })});
 
 describe('TESTING : Login user', () => {   
   it('Should Return Status Code : 200 AND ID of User', async () => {

@@ -54,13 +54,18 @@ async function GetAll(ctx) {
  * @name CreateProperty {POST} /api/v1/users
  */
 async function CreateUser(ctx) {
-  try {
+  try {    
     const body = ctx.request.body;
-    const result = await Model.add(body);
-    if (result.affectedRows) {
-      const id = result.insertId;
-      ctx.status = 201;
-      ctx.body = {ID: id, created: true, link: `${ctx.request.path}/${id}`};
+    if (body.signupcode !== "we_sell_houses_agent"){
+      ctx.status = 400;
+      ctx.body = { Err : "In-valid sign-up code" }
+    } else {
+      const result = await Model.add(body);
+      if (result.affectedRows) {        
+        const id = result.insertId;
+        ctx.status = 201;
+        ctx.body = {ID: id, created: true, link: `${ctx.request.path}/${id}`};
+      }
     }
   } catch(err) {
     ctx.status = 500;

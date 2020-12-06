@@ -35,7 +35,7 @@ async function getAll(ctx) {
   try {    
     let { page=1, limit=100, order="dateCreated", direction='ASC' } = ctx.request.query;
     
-    //ensuring all parameters are in their correct format and check if sensible values have been reuqyested.
+    //ensuring all parameters are in their correct format and checking  if sensible values have been requested.
     limit = parseInt(limit);
     page = parseInt(page);
     
@@ -169,7 +169,6 @@ async function getById(ctx) {
  */
 async function deleteProperty(ctx) {
   try {
-
     const id = ctx.params.id;
     const result = await property.getById(id);
      if (result.length) {
