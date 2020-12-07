@@ -7,6 +7,7 @@
 const {Validator, ValidationError} = require('jsonschema');
 const userSchema = require('../schemas/User.json').definitions.user;
 const propertySchema = require('../schemas/Property.json').definitions.property;
+const PropertyUpdateSchema = require('../schemas/Property.json').definitions.PropertyUpdate;
 const UserUpdateSchema = require('../schemas/User.json').definitions.userUpdate;
 /**
  * Wrapper that returns a Koa middleware validator for a given schema.
@@ -51,3 +52,5 @@ exports.ValidateUser = makeKoaValidator(userSchema, 'user');
 exports.ValidateProperty = makeKoaValidator(propertySchema, 'property');
 /** Validate data against the user schema for updating existing estatet agensts on to the system */
 exports.ValidateUserUpdate = makeKoaValidator(UserUpdateSchema, 'userUpdate');
+/** Validate data against updating the propert schema */
+exports.ValidatePropertyUpdate = makeKoaValidator(PropertyUpdateSchema, 'PropertyUpdate');

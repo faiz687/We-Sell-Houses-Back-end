@@ -14,7 +14,7 @@ const bodyParser = require('koa-bodyparser');
 const auth = require('../controllers/auth');
 const property = require('../models/Property');
 const features = require('../models/Feature');
-const {  ValidateProperty , validatePropertyFeature } = require('../controllers/validation');
+const {  ValidateProperty , validatePropertyFeature , ValidatePropertyUpdate } = require('../controllers/validation');
 const Can = require('../permissions/property');
 const prefix = '/api/v1/property';
 const router = Router({prefix: prefix});
@@ -23,7 +23,7 @@ const router = Router({prefix: prefix});
 router.get('/',getAll);
 router.get('/TotalProperty' , getpropertyCount);
 router.post('/', auth, bodyParser(), ValidateProperty , CreateProperty);
-router.put('/:id([0-9]{1,})', auth, bodyParser(), ValidateProperty, updateProperty);
+router.put('/:id([0-9]{1,})', auth, bodyParser(), ValidatePropertyUpdate, updateProperty);
 router.get('/:id([0-9]{1,})', getById);
 router.del('/:id([0-9]{1,})', auth, deleteProperty);
 /**
@@ -34,7 +34,9 @@ router.del('/:id([0-9]{1,})', auth, deleteProperty);
 async function getAll(ctx) {
   try {    
     let { page=1, limit=100, order="dateCreated", direction='ASC' } = ctx.request.query;
+    let { Price, Category , location , UnderOffer} = ctx.request.query;
     
+    // get filter search data from ctx.request.query here.
     //ensuring all parameters are in their correct format and checking  if sensible values have been requested.
     limit = parseInt(limit);
     page = parseInt(page);
@@ -50,7 +52,7 @@ async function getAll(ctx) {
     if (result.length) {
       const body = result.map(post => {        
       const  { houseid, Title,  imageURL, category , offerprice , UserId , dateCreated} = post;
-      // implment hateoas principe to open house specific page when user click on house link.
+      // implement hateoas principle to open house specific page when user click on house link.
       const links = { self: `${ctx.protocol}://${ctx.host}${prefix}/${post.houseid}`}
       return { houseid, Title,  imageURL,  category , offerprice , UserId , dateCreated , links}
          
